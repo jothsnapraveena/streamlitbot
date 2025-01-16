@@ -33,3 +33,4 @@ openai
 python-dotenv
 pypdf
 langchainhub
+streamlit-mic-recorder
