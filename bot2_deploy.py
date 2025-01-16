@@ -83,11 +83,11 @@
 # else:
 #     st.warning("No input detected. Please try again.")
 
-import streamlit as st
-from streamlit_mic_recorder import speech_to_text
 import os
 import tempfile
+import streamlit as st
 from gtts import gTTS
+from streamlit_mic_recorder import speech_to_text
 from langchain_openai import ChatOpenAI
 import base64
 
@@ -152,7 +152,8 @@ if st.button("Start Voice Conversation"):
             start_prompt="⭕ TALK",
             stop_prompt="🟥 LISTENING...PRESS TO STOP",
             just_once=True,
-            use_container_width=True
+            use_container_width=True,
+            key=f"s2t_{len(st.session_state.conversation)}"  # Unique key
         )
 
         if s2t_output:
