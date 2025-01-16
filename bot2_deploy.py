@@ -68,28 +68,41 @@ import base64
 
 # Function: Text-to-Speech (TTS) with Autoplay
 def text_to_speech(text):
-    # Convert text to speech and save to a temporary MP3 file
-    tts = gTTS(text)
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
-        tts.save(fp.name)
-        temp_file = fp.name  # Save the file path
+    try:
+        # Convert text to speech and save to a temporary MP3 file
+        tts = gTTS(text)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
+            tts.save(fp.name)
+            temp_file = fp.name  # Save the file path
 
-    # Encode the audio file to base64 for embedding in HTML
-    with open(temp_file, "rb") as audio_file:
-        audio_bytes = audio_file.read()
-        encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
+        # Encode the audio file to Base64
+        with open(temp_file, "rb") as audio_file:
+            audio_bytes = audio_file.read()
+            encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
-    # Create autoplay HTML audio element
-    autoplay_audio_html = f"""
-    <audio autoplay>
-        <source src="data:audio/mp3;base64,{encoded_audio}" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-    """
-    # Render the audio in Streamlit
-    st.markdown(autoplay_audio_html, unsafe_allow_html=True)
+        # Create autoplay HTML audio element
+        autoplay_audio_html = f"""
+        <audio autoplay>
+            <source src="data:audio/mp3;base64,{encoded_audio}" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+        """
+        # Render the audio in Streamlit
+        st.markdown(autoplay_audio_html, unsafe_allow_html=True)
 
-st.title("Speech-to-Text Tester")
+    except Exception as e:
+        st.error(f"An error occurred during text-to-speech conversion: {e}")
+
+    finally:
+        # Clean up the temporary file after use
+        if os.path.exists(temp_file):
+            try:
+                os.remove(temp_file)
+            except Exception as cleanup_error:
+                st.warning(f"Temporary file cleanup failed: {cleanup_error}")
+
+
+st.title("Conversation Tester")
 st.markdown("Press the TALK button below and say something.")
 
 # Test speech-to-text functionality

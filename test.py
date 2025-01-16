@@ -44,7 +44,7 @@ def text_to_speech(text):
     # Render the audio in Streamlit
     st.markdown(autoplay_audio_html, unsafe_allow_html=True)
 
-st.title("Speech-to-Text Tester")
+st.title("Conversational tester")
 st.markdown("Press the TALK button below and say something.")
 
 # Test speech-to-text functionality
