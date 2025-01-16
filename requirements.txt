@@ -19,7 +19,7 @@ sounddevice
 altair
 pygame
 streamlit
-speech_recognition
+SpeechRecognition
 gTTS
 langchain
 langchain-community
